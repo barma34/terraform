@@ -63,3 +63,36 @@ resource "azurerm_network_security_rule" "my_sg" {
     azurerm_network_security_group.my_sg
   ]
 }
+
+resource "azurerm_virtual_machine_scale_set" "preshccol" {
+  name                = "preshcool"
+  location            = "eastus"
+  resource_group_name = "my_rg"
+  upgrade_policy_mode = "Manual"
+  network_profile {
+    name    = "preshccol"
+    primary = true
+    ip_configuration {
+      name      = "web"
+      primary   = true
+      subnet_id = "192.168.1.0/24"
+    }
+  }
+  os_profile {
+    computer_name_prefix = "ubentu"
+    admin_username       = "dell"
+    custom_data          = " "
+  }
+  sku {
+    name     = "preshccol"
+    tier     = "standard"
+    capacity = "2"
+  }
+  storage_profile_os_disk {
+    create_option = "FromImage"
+  }
+  tags = {
+    Environmental = "Dev"
+  }
+
+}
